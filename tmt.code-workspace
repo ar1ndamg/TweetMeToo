@@ -3,5 +3,8 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"python.pythonPath": "/home/arindam/.local/share/virtualenvs/tweetmetoo-WHu9_atw/bin/python"
+	}
 }

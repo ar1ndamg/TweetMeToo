@@ -24,9 +24,10 @@ SECRET_KEY = '=qf69c*oct1k1pl5@bnk=0oc9h))=4cn9yzzv+gf_czovsa4^c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOG_IN_URL = '/login'
+ALLOWED_HOSTS = ['127.0.0.1', '.cfe.sh', 'localhost']
 
-ALLOWED_HOSTS = []
-
+MAX_LENGTH = 240
 
 # Application definition
 
@@ -37,11 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third Party
+    'rest_framework',
+    'corsheaders',
+    # internal
+    'tweets'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -51,10 +58,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'tweetmetoo.urls'
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGX = r'^/api/.*$'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,"templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +128,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+    'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+# if DEBUG:
+#     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
